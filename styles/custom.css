@@ -1,0 +1,44 @@
+﻿html, body {
+  margin: 0;
+  padding: 0;
+}
+
+div.root {
+  padding-left: 150px;
+}
+
+div.board-element {
+  position: absolute;
+}
+
+div.board-frame {
+  background-color: #630
+}
+
+div.board-points-block {
+  height: 450px;
+  width: 50px;
+}
+
+div.board-point-block {
+  height: 225px; 
+  width: 50px;
+  text-align: center;
+  border: 1px solid black;
+}
+
+div.point-bottom-odd {
+  padding-top: 200px;
+  height: 25px; 
+}
+
+div.point-bottom-even {
+  padding-top: 200px;
+  height: 25px; 
+}
+
+div.point-top-odd {
+}
+
+div.point-top-even {
+}

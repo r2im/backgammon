@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" / >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="styles/normalize.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="styles/custom.css" media="all" rel="stylesheet" type="text/css" />
+    <title>Backgammon</title>
+  </head>
+  <body>
+    <div class="root" style="background-color: #c60; margin-bottom: 20px">
+      <h1 style="color: white; margin: 0">Backgammon</h1>
+    </div>
+    <div class="root" style="position: relative">
+      <div class="board-element board-frame" style="height: 10px; width: 670px; top: 0px; left: 150px">&nbsp;</div>
+      <div class="board-element board-frame" style="height: 450px; width: 10px; top: 10px;">&nbsp;</div>
+
+      <div class="board-element board-points-block" style="top: 10px; left: 160px">
+        <div class="board-point-block point-top-even">12</div>
+        <div class="board-point-block point-bottom-odd">13</div>
+      </div>
+      <div class="board-element board-points-block" style="top: 10px; left: 210px">
+        <div class="board-point-block point-top-odd">11</div>
+        <div class="board-point-block point-bottom-even">14</div>
+      </div>
+      <div class="board-element board-points-block" style="top: 10px; left: 260px">
+        <div class="board-point-block point-top-even">10</div>
+        <div class="board-point-block point-bottom-odd">15</div>
+      </div>
+      <div class="board-element board-points-block" style="top: 10px; left: 310px">
+        <div class="board-point-block point-top-odd">9</div>
+        <div class="board-point-block point-bottom-even">16</div>
+      </div>
+      <div class="board-element board-points-block" style="top: 10px; left: 360px">
+        <div class="board-point-block point-top-even">8</div>
+        <div class="board-point-block point-bottom-odd">17</div>
+      </div>
+      <div class="board-element board-points-block" style="top: 10px; left: 410px">
+        <div class="board-point-block point-top-odd">7</div>
+        <div class="board-point-block point-bottom-even">18</div>
+      </div>
+      <div class="board-element board-frame" style="height: 450px; width: 10px; top: 10px; left: 460px"></div>
+      <div class="board-element board-points-block" style="top: 10px; left: 470px">
+        <div class="board-point-block point-top-even">6</div>
+        <div class="board-point-block point-bottom-odd">19</div>
+      </div>
+      <div class="board-element board-points-block" style="top: 10px; left: 520px">
+        <div class="board-point-block point-top-odd">5</div>
+        <div class="board-point-block point-bottom-even">20</div>
+      </div>
+      <div class="board-element board-points-block" style="top: 10px; left: 570px">
+        <div class="board-point-block point-top-even">4</div>
+        <div class="board-point-block point-bottom-odd">21</div>
+      </div>
+      <div class="board-element board-points-block" style="top: 10px; left: 620px">
+        <div class="board-point-block point-top-odd">3</div>
+        <div class="board-point-block point-bottom-even">22</div>
+      </div>
+      <div class="board-element board-points-block" style="top: 10px; left: 670px">
+        <div class="board-point-block point-top-even">2</div>
+        <div class="board-point-block point-bottom-odd">23</div>
+      </div>
+      <div class="board-element board-points-block" style="top: 10px; left: 720px">
+        <div class="board-point-block point-top-odd">1</div>
+        <div class="board-point-block point-bottom-even">24</div>
+      </div>
+      <div class="board-element board-frame" style="height: 450px; width: 10px; top: 10px; left: 770px"></div>
+      <div class="board-element board-frame" style="height: 450px; width: 10px; top: 10px; left: 810px"></div>
+      <div class="board-element board-frame" style="height: 10px; width: 670px; top: 460px; left: 150px"></div>
+    </div>
+    <img id="checker1" src="images/checker.png" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('#checker1').draggable({ snap: '.board-point-block', snapMode: "outer" });
+      });
+    </script>
+  </body>
+</html>
