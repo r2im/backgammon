@@ -97,7 +97,7 @@
           var i, p, w = 50, h = 250;
           for(i = 0; i < this.points.length; i++) {
             
-            p = this.points[i].position();
+            p = this.points[i].obj.position();
             if (p.left < x && p.left + w > x) {
               if (p.top < y && p.top + h > y) {
                 return this.points[i];
@@ -128,9 +128,9 @@
             if (point == null) {
               $(this).animate({top: this.start_y, left: this.start_x}, 500);
             } else {
-              x = point.position().left;
-              y = point.position().top;
-              if (point.hasClass('bottom')) {
+              x = point.obj.position().left;
+              y = point.obj.position().top;
+              if (point.obj.hasClass('bottom')) {
                 y += 200;
               }
               $(this).animate({top: y, left: x}, 500);
