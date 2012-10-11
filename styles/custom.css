@@ -4,7 +4,11 @@
 }
 
 div.root {
-  padding-left: 150px;
+  margin-left: 150px;
+}
+
+div#field {
+  width: 680px;
 }
 
 div.board-element {
@@ -15,12 +19,9 @@ div.board-frame {
   background-color: #630
 }
 
-div.board-points-block {
-  height: 500px;
-  width: 50px;
-}
-
 div.board-point-block {
+  position: static;
+  display: inline-block;
   height: 250px; 
   width: 50px;
   text-align: center;
@@ -28,11 +29,12 @@ div.board-point-block {
 }
 
 div.point-bottom-odd {
+  background-position: bottom;
   background-image: url(../images/point_bottom_odd.png)
 }
 
 div.point-bottom-even {
-  vertical-align: bottom;
+  background-position: bottom;
   background-image: url(../images/point_bottom_even.png)
 }
 
