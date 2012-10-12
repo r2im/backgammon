@@ -138,12 +138,12 @@ Point.prototype = {
           return true;        
         if(c.last_point.id == (this.id - die2.value - die2.value))
           return true;
-    } else if (c.color == RED) {
-        if (c.last_point.id == (this.id + die1.value) && die1.value != 0)
+    } else if (c.color == RED && c.last_point.id > this.id) {
+        if (c.last_point.id == (this.id + die1.value))
           return true;
-        if (c.last_point.id == (this.id + die2.value) && die2.value != 0)
+        if (c.last_point.id == (this.id + die2.value))
           return true;        
-        if(c.last_point.id == (this.id + die2.value - die2.value) && (die1.value + die2.value) != 0)
+        if(c.last_point.id == (this.id + die2.value + die2.value))
           return true;
     }
     
