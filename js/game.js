@@ -12,17 +12,11 @@ Die.prototype = {
     var nv, last, x;
     nv = Math.round(Math.random() * 5 + 1);
 
-    var w = 48;
-    
+    var w = 49;
     nv = Math.round(Math.random() * 5 + 1);
-    if (nv < this.value) {
-      x = (nv - 1) * w - (this.value - 1) * w
-      this.obj.css('background-position-x', x + 'px');
-    } else if (nv > this.value) {
-      x = (this.value - 1) * w - (nv - 1) * w
-      this.obj.css('background-position-x', x + 'px');
-    }
-    
+
+    x = -nv * w + 48
+    this.obj.css('background-position-x', x + 'px');
     this.value = nv;
   }
   
@@ -137,12 +131,12 @@ Point.prototype = {
       return false;
     }
     
-    if (c.color == BLACK) {
-        if (c.last_point.id == (this.id - die1.value) && die1.value != 0)
+    if (c.color == BLACK && c.last_point.id < this.id) {
+        if (c.last_point.id == (this.id - die1.value))
           return true;
-        if (c.last_point.id == (this.id - die2.value) && die2.value != 0)
+        if (c.last_point.id == (this.id - die2.value))
           return true;        
-        if(c.last_point.id == (this.id - die2.value - die2.value) && (die1.value + die2.value) != 0)
+        if(c.last_point.id == (this.id - die2.value - die2.value))
           return true;
     } else if (c.color == RED) {
         if (c.last_point.id == (this.id + die1.value) && die1.value != 0)
