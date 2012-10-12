@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" / >
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="styles/normalize.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="styles/bootstrap.css" media="all" rel="stylesheet" type="text/css" />
     <link href="styles/jquery-ui.css" media="all" rel="stylesheet" type="text/css" />
     <link href="styles/custom.css" media="all" rel="stylesheet" type="text/css" />
     <title>Backgammon</title>
@@ -13,7 +13,7 @@
     <div style="background-color: #c60; margin-bottom: 20px">
       <h1 style="color: white; margin: 0 0 0 150px">Backgammon</h1>
     </div>
-    <div id="field" class="root" style="position: relative">
+    <div id="field" class="root" style="position: relative; display:none">
       <div class="board-element board-frame" style="height: 10px; width: 700px; top: -10px; left: 0px"></div>
       <div class="board-element board-frame" style="height: 520px; width: 10px; top: -10px; left: -10px"></div>
       
@@ -22,127 +22,69 @@
       <div class="board-element board-frame" style="height: 10px; width: 700px; top: 500px; left: 0px"></div>
 
     </div>
-    
+    <div id="info" style="display: none">
+      <div id="BlackPlayerNameLabel" style="font-size: 22px; font-weight: bold; position: absolute; left: 880px; top: 50px;"></div>
+      <div id="BlackPlayerDie" class="die">&nbsp;</div>
+      <div id="RedPlayerDie" class="die">&nbsp;</div>
+      <div id="RedPlayerNameLabel" style="font-size: 22px; font-weight: bold; position: absolute; left: 880px; top: 490px; color: #D00"></div>
+      <button id="btn-exit" class="btn btn-primary" >Exit</button>
+    </div>
+    <div id="login-box" style="border: 10px solid #630; width: 300px; padding: 15px" class="root">
+      <form>
+        <legend>Welcome</legend>
+        <label>Black player</label>
+        <input id="BlackPlayerName" type="text" placeholder="Black player name">
+        <label>Red player</label>
+        <input id="RedPlayerName" type="text" placeholder="Black player name">
+        <br />
+        <button id="btn-play" class="btn btn-primary">Play</button>
+      </form>
+    </div>
     <!--script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script -->
     <script src="js/jquery.js"></script>
     <script src="js/jquery-ui.js"></script>
+    <script src="js/game.js"></script>
     <script>
-      var Checker = function(id, html) {
-        this.id = id;
-        this.obj = $(html);
-        this.last_point = null;
-      }
-      
-      var Point = function(id, html) {
-        this.id = id;
-        this.obj = $(html);
-        this.checkers = [];
-      }
-      
-      var Board = function() {
-        this.points = [];
-        this.reds = [];
-        this.blacks = [];
-        this.field = $('#field');
-      }
-      
-      Board.prototype = {
-        init: function() {
-          var i = 13;
-          var tmp;
-          for(; i <= 18; i++) {
-            this.init_point(i);
-          }
-          this.field.append('<div class="board-point-block board-frame" sytle="width: 40px"></div>');
-          for(i = 19; i <= 24; i++) {
-            this.init_point(i);
-          }
-          
-          //bottom line
-          for(i = 12; i >= 7; i--) {
-            this.init_point(i);
-          }
-          this.field.append('<div class="board-point-block board-frame" sytle="width: 40px"></div>');
-          for(i = 6; i >= 1; i--) {
-            this.init_point(i);
-          }
-          
-          //Init buttons
-          var c;
-          for (i = 0; i < 15; i++) {
-            c = new Checker(i, '<img id="black-' + i+ '" src="images/checker_black.png" class="checker" />');
-            c.obj.hide();
-            this.blacks[i] = c;
-            this.field.append(c.obj);
-          }
-        },
-        init_point: function(i) {
-          var side = 'top';
-          if (i < 13) {
-            side = 'bottom';
-          }
-            
-          if (i % 2 == 0) {
-            tmp = new Point(i, '<div id="point-' + i + '" class="board-point-block point-' + side + '-even ' + side + '"></div>');
-            this.field.append(tmp.obj);
-          } else {
-            tmp = new Point(i, '<div id="point-' + i + '" class="board-point-block point-' + side + '-odd ' + side + '"></div>');
-            this.field.append(tmp.obj);
-          }
-          this.points.push(tmp);
-        },
-        
-        get_point_at: function(x, y) {
-          var i, p, w = 50, h = 250;
-          for(i = 0; i < this.points.length; i++) {
-            
-            p = this.points[i].obj.position();
-            if (p.left < x && p.left + w > x) {
-              if (p.top < y && p.top + h > y) {
-                return this.points[i];
-              }
-            }
-          }
-        }
-        
-      };
       
       var the_board = new Board();
       the_board.init();
-      
+      var die1, die2;
       $(document).ready(function() {
-      $('#black-0').show();
-        $('#black-0').draggable({ 
-          snap: '.board-point-block', 
-          snapMode: "outer",
-          start: function() {
-            this.start_x = $(this).position().left;
-            this.start_y = $(this).position().top;
-          },
-          stop: function() {
-            var x = $(this).position().left + 25;
-            var y = $(this).position().top + 25;
 
-            var point = the_board.get_point_at(x, y);
-            if (point == null) {
-              $(this).animate({top: this.start_y, left: this.start_x}, 500);
-            } else {
-              x = point.obj.position().left;
-              y = point.obj.position().top;
-              if (point.obj.hasClass('bottom')) {
-                y += 200;
-              }
-              $(this).animate({top: y, left: x}, 500);
-            }
-          }
+        $('#btn-exit').click(function() {
+          window.location = 'index.html';
+          return false;
         });
-        $('#black1').mouseup(function() {
-          var el = $('#point-1');
-          var x = el.position().left;
-          var y = el.position().top;
+
+        $('#btn-play').click(function() {
+          $('#login-box').hide();
+          $('#field').show();
+          $('#info').show();
+          the_board.init_checkers();
+          the_board.validate();
+          $('#BlackPlayerNameLabel').append('Player: ' + $('#BlackPlayerName').val() + '<br /><br /><button id="BlackRollDice" class="btn btn-inverse">Roll Dice</button>');
+          $('#RedPlayerNameLabel').html('<button id="RedRollDice" class="btn btn-danger">Roll Dice</button><br /><br />Player: ' + $('#RedPlayerName').val());
           
+          die1 = new Die($('#BlackPlayerDie'));
+          die2 = new Die($('#RedPlayerDie'));
+          $('#BlackRollDice').click(function() {
+            die1.roll();
+            die2.roll();
+            $('#BlackRollDice').attr('disabled', 'disabled');
+            $('#RedRollDice').removeAttr('disabled');
+            the_board.validate(BLACK);
+          });
+          $('#RedRollDice').click(function() {
+            die1.roll();
+            die2.roll();
+            $('#RedRollDice').attr('disabled', 'disabled');
+            $('#BlackRollDice').removeAttr('disabled');
+            the_board.validate(RED);
+          });
+          return false;
         });
+
       });
     </script>
   </body>
