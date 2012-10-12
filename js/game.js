@@ -49,20 +49,24 @@ Checker.prototype = {
         if (point == null) {
           c.obj.animate({top: c.start_y, left: c.start_x}, 500);
         } else {
-          var i = 0, 
-              valid = the_board.get_available_moves_for(c),
-              ok = false;
-          for(;i < valid.length; i++) {
-            if (valid[i].id == point.id) {
-              ok = true;
+          if(point.can_accept(c)) {
+            if (point.has_blot(c.color)) {
+              var blot = point.checkers[0];
+              point.checkers = [];
+              var jail = the_board[blot.color + '_jail'];
+              jail.add(blot);
+              if (blot.color == BLACK)
+                blot.obj.animate({top: jail.obj.position().top, left: jail.obj.position().left}, 500);
+              else
+                blot.obj.animate({top: jail.obj.position().top + 200, left: jail.obj.position().left}, 500);
             }
-          }
-          if(ok) {
+            var tmp = c.last_point.id;
             c.last_point.remove_checker(c.id)
-            if (Math.abs(c.last_point.id - point.id) == die1.value) {
+            point.add_checker(c);
+            if (Math.abs(tmp - point.id) == die1.value) {
               die1.value = 0;
               die1.obj.attr('disabled', 'disabled');
-            } else if (Math.abs(c.last_point.id - point.id) == die2.value) {
+            } else if (Math.abs(tmp - point.id) == die2.value) {
               die2.value = 0;
               die2.obj.attr('disabled', 'disabled');
             } else {
@@ -71,7 +75,6 @@ Checker.prototype = {
               die2.value = 0;
               die2.obj.attr('disabled', 'disabled');
             }
-            point.add_checker(c);
           } else {
             c.obj.animate({top: c.start_y, left: c.start_x}, 500);
           }
@@ -127,18 +130,18 @@ Point.prototype = {
   },
   can_accept: function(c) {
     var len = this.checkers.length;
-    if (len != 0 && this.checkers[0].color != c.color) {
+    if (len != 1 && len != 0 && this.checkers[0].color != c.color) {
       return false;
     }
     
-    if (c.color == BLACK && c.last_point.id < this.id) {
+    if (c.color == BLACK && (c.last_point.id == 25 || c.last_point.id < this.id)) {
         if (c.last_point.id == (this.id - die1.value))
           return true;
         if (c.last_point.id == (this.id - die2.value))
           return true;        
         if(c.last_point.id == (this.id - die1.value - die2.value))
           return true;
-    } else if (c.color == RED && c.last_point.id > this.id) {
+    } else if (c.color == RED && (c.last_point.id == 0 || c.last_point.id > this.id)) {
         if (c.last_point.id == (this.id + die1.value))
           return true;
         if (c.last_point.id == (this.id + die2.value))
@@ -148,13 +151,25 @@ Point.prototype = {
     }
     
     return false;
+  },
+  has_blot: function(hiting_color) {
+    return this.checkers.length == 1 && this.checkers[0].color != hiting_color;
   }
 }
 
 var Jail = function(html) {
   this.obj = $(html);
+  this.checkers = [];
 }
-
+Jail.prototype = {
+  add: function(c) {
+    if (c.color == BLACK)
+      c.last_point = new Point(25, '');
+    if (c.color == RED)
+      c.last_point = new Point(0, '');
+    this.checkers.push(c);
+  }
+};
 var Board = function() {
   this.points = [];
   this.field = $('#field');
@@ -165,6 +180,16 @@ Board.prototype = {
     $('.checker').draggable('disable');
     if (color == undefined) 
       return
+    if (color == BLACK && this.black_jail.checkers.length > 0) {
+      var len = this.black_jail.checkers.length;
+      this.black_jail.checkers[len - 1].obj.draggable('enable');
+      return;
+    }
+    if (color == RED && this.red_jail.checkers.length > 0) {
+      var len = this.red_jail.checkers.length;
+      this.red_jail.checkers[len - 1].obj.draggable('enable');
+      return;
+    }
     var i, p, c, len = this.points.length, available_points;
     for (i = 0; i < len; i++) {
       p = this.points[i];
@@ -202,8 +227,8 @@ Board.prototype = {
     for(; i <= 18; i++) {
       this.init_point(i);
     }
-    this.top_jail = new Jail('<div class="board-point-block board-frame" sytle="width: 40px"></div>');
-    this.field.append(this.top_jail.obj);
+    this.black_jail = new Jail('<div class="board-point-block board-frame" sytle="width: 40px"></div>');
+    this.field.append(this.black_jail.obj);
     for(i = 19; i <= 24; i++) {
       this.init_point(i);
     }
@@ -212,8 +237,8 @@ Board.prototype = {
     for(i = 12; i >= 7; i--) {
       this.init_point(i);
     }
-    this.bottom_jail = new Jail('<div class="board-point-block board-frame" sytle="width: 40px"></div>');
-    this.field.append(this.bottom_jail.obj);
+    this.red_jail = new Jail('<div class="board-point-block board-frame" sytle="width: 40px"></div>');
+    this.field.append(this.red_jail.obj);
     for(i = 6; i >= 1; i--) {
       this.init_point(i);
     }
