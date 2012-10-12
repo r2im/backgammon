@@ -136,19 +136,23 @@ Point.prototype = {
           return true;
         if (c.last_point.id == (this.id - die2.value))
           return true;        
-        if(c.last_point.id == (this.id - die2.value - die2.value))
+        if(c.last_point.id == (this.id - die1.value - die2.value))
           return true;
     } else if (c.color == RED && c.last_point.id > this.id) {
         if (c.last_point.id == (this.id + die1.value))
           return true;
         if (c.last_point.id == (this.id + die2.value))
           return true;        
-        if(c.last_point.id == (this.id + die2.value + die2.value))
+        if(c.last_point.id == (this.id + die1.value + die2.value))
           return true;
     }
     
     return false;
   }
+}
+
+var Jail = function(html) {
+  this.obj = $(html);
 }
 
 var Board = function() {
@@ -184,7 +188,8 @@ Board.prototype = {
     
     for(i = 0; i < len; i++) {
       p = this.points[i];
-      if (!p.can_accept(c))
+      var b = p.can_accept(c);
+      if (!b)
         continue;
       valid.push(p)
     }
@@ -197,7 +202,8 @@ Board.prototype = {
     for(; i <= 18; i++) {
       this.init_point(i);
     }
-    this.field.append('<div class="board-point-block board-frame" sytle="width: 40px"></div>');
+    this.top_jail = new Jail('<div class="board-point-block board-frame" sytle="width: 40px"></div>');
+    this.field.append(this.top_jail.obj);
     for(i = 19; i <= 24; i++) {
       this.init_point(i);
     }
@@ -206,7 +212,8 @@ Board.prototype = {
     for(i = 12; i >= 7; i--) {
       this.init_point(i);
     }
-    this.field.append('<div class="board-point-block board-frame" sytle="width: 40px"></div>');
+    this.bottom_jail = new Jail('<div class="board-point-block board-frame" sytle="width: 40px"></div>');
+    this.field.append(this.bottom_jail.obj);
     for(i = 6; i >= 1; i--) {
       this.init_point(i);
     }
