@@ -55,7 +55,7 @@ Checker.prototype = {
               point.checkers = [];
               var jail = the_board[blot.color + '_jail'];
               jail.add(blot);
-              if (blot.color == BLACK)
+              if (blot.color == RED)
                 blot.obj.animate({top: jail.obj.position().top, left: jail.obj.position().left}, 500);
               else
                 blot.obj.animate({top: jail.obj.position().top + 200, left: jail.obj.position().left}, 500);
@@ -164,9 +164,9 @@ var Jail = function(html) {
 Jail.prototype = {
   add: function(c) {
     if (c.color == BLACK)
-      c.last_point = new Point(25, '');
-    if (c.color == RED)
       c.last_point = new Point(0, '');
+    if (c.color == RED)
+      c.last_point = new Point(25, '');
     this.checkers.push(c);
   }
 };
@@ -227,8 +227,8 @@ Board.prototype = {
     for(; i <= 18; i++) {
       this.init_point(i);
     }
-    this.black_jail = new Jail('<div class="board-point-block board-frame" sytle="width: 40px"></div>');
-    this.field.append(this.black_jail.obj);
+    this.red_jail = new Jail('<div class="board-point-block board-frame" sytle="width: 40px"></div>');
+    this.field.append(this.red_jail.obj);
     for(i = 19; i <= 24; i++) {
       this.init_point(i);
     }
@@ -237,8 +237,8 @@ Board.prototype = {
     for(i = 12; i >= 7; i--) {
       this.init_point(i);
     }
-    this.red_jail = new Jail('<div class="board-point-block board-frame" sytle="width: 40px"></div>');
-    this.field.append(this.red_jail.obj);
+    this.black_jail = new Jail('<div class="board-point-block board-frame" sytle="width: 40px"></div>');
+    this.field.append(this.black_jail.obj);
     for(i = 6; i >= 1; i--) {
       this.init_point(i);
     }
